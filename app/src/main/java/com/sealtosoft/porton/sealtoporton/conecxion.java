@@ -47,7 +47,7 @@ public class conecxion extends AppCompatActivity {
     LinearLayout panelPrincipal, panelPass, panelFinalizado, panelDatos;
 
 
-
+    //Coneccion a la base de datos
     baseDeDatos codigos = new baseDeDatos(this,"baseDeDatos",null,2);
     SQLiteDatabase db;
     Cursor c;
