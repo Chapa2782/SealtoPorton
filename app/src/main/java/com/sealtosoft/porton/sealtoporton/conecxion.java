@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -54,127 +56,22 @@ public class conecxion extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
     String clave,dispositivo;
+    FragmentTransaction transaction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conecxion);
 
-        btnBuscar =  findViewById(R.id.btnBuscar);
-        btnContinuarPass = findViewById(R.id.btnContinuarPass);
-        Pass = findViewById(R.id.Pass);
-        panelPrincipal = findViewById(R.id.panelPrincipal);
-        panelPass = findViewById(R.id.panelPass);
-        panelFinalizado = findViewById(R.id.panelFinalizado);
-        btnCOntinuarDatos = findViewById(R.id.btnContinuar);
-        panelDatos = findViewById(R.id.panelDatos);
-        Descripcion = findViewById(R.id.txtDescripcion);
-        Lista = findViewById(R.id.listado);
-        adaptador = BluetoothAdapter.getDefaultAdapter();
-        arrayAdapter = new ArrayAdapter(this,R.layout.adapter,R.id.dispositivos);
-        Lista.setAdapter(arrayAdapter);
-        database = FirebaseDatabase.getInstance();
-        btnCOntinuarDatos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Descripcion.getText().length() < 4){
-                    Toast.makeText(conecxion.this,"Especifique una descripcion de 5 caracteres o mas",Toast.LENGTH_SHORT);
-                    return;
-                }
-                panelDatos.setVisibility(View.GONE);
-                panelPass.setVisibility(View.VISIBLE);
-            }
-        });
+
+        //Inicializa Fragment
+        FragmentBusqueda fragmentBusqueda = new FragmentBusqueda();
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.Principal,fragmentBusqueda);
+        transaction.commit();
 
 
-        Lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView texto = (TextView) view.findViewById(R.id.dispositivos);
-                dispositivo = dir[position];
-                myRef = database.getReference("Dispositivos/" + dispositivo);
-
-                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        baseEstructura datos = dataSnapshot.getValue(baseEstructura.class);
-                        if(datos.Disponible){
-                            clave = datos.Clave;
-                            panelPrincipal.setVisibility(View.GONE);
-                            panelDatos.setVisibility(View.VISIBLE);
-                        }else{
-                            Toast.makeText(conecxion.this,"Dispositivo no disponible",Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-            }
-        });
-        Descripcion.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if (Descripcion.getText().length() < 4) {
-                        Toast.makeText(conecxion.this, "Especifique una descripcion de 5 caracteres o mas", Toast.LENGTH_SHORT);
-                        return false;
-                    }
-                    panelDatos.setVisibility(View.GONE);
-                    panelPass.setVisibility(View.VISIBLE);
-                }
-                return false;
-            }
-        });
-        Pass.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    Aprobado();
-                }
-                return false;
-            }
-        });
-        btnContinuarPass.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-               Aprobado();
-            }
-        });
-
-
-        btnBuscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                adaptador = BluetoothAdapter.getDefaultAdapter();
-
-                // Get a set of currently paired devices and append to 'pairedDevices'
-                Set <BluetoothDevice> pairedDevices = adaptador.getBondedDevices();
-                int pos = 0;
-                for(BluetoothDevice d : pairedDevices){
-                        arrayAdapter.add(d.getName());
-                        dir[pos] = d.getAddress();
-                        pos++;
-                }
-
-
-                // Add previosuly paired devices to the array
-                if (pairedDevices.size() > 0) {
-                    Object nombres[] =  pairedDevices.toArray();
-
-                } else {
-                    String noDevices = "Ningun dispositivo pudo ser emparejado";
-                    arrayAdapter.add(noDevices);
-                }
-
-            }
-        });
     }
     public void Aprobado(){
         String parcial = Pass.getText().toString();
