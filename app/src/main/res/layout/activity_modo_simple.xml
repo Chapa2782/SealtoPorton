@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".modoSimple">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:id="@+id/panelEstados">
+            
+            <ImageButton
+                android:layout_width="@dimen/sizeIconNueva"
+                android:layout_height="@dimen/sizeIconNueva"
+                android:id="@+id/estado_conexion"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:background="@drawable/estados_desconectado" />
+            <ImageButton
+                android:layout_width="@dimen/sizeIconNueva"
+                android:layout_height="@dimen/sizeIconNueva"
+                android:id="@+id/estado_datos"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:background="@drawable/estados_nulo"/>
+
+
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/anchoBotonAccion"
+            android:id="@+id/boton_accion"
+            android:layout_marginTop="@dimen/topMarginBotonAccion"
+            android:background="@drawable/boton_desconectado"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

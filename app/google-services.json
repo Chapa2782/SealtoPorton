@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "787073776391",
+    "firebase_url": "https://sealtoporton.firebaseio.com",
+    "project_id": "sealtoporton",
+    "storage_bucket": "sealtoporton.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787073776391:android:52f0939ee32dbc35",
+        "android_client_info": {
+          "package_name": "com.sealtosoft.porton.sealtoporton"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "787073776391-6v5pkmcn7m1bemvamaq69rco1qvjdcic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sealtosoft.porton.sealtoporton",
+            "certificate_hash": "4972858736d4cf4bd55b79b24d4012e17dca8d2b"
+          }
+        },
+        {
+          "client_id": "787073776391-brijtrdiqrg1u8kdq9u9ovjuv05e1160.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzPtQoGsHnfuiH3WhNK_2IMZ4RFjBSSlM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "787073776391-brijtrdiqrg1u8kdq9u9ovjuv05e1160.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

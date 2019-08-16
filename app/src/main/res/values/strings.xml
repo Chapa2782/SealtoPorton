@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SealtoPorton</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="appwidget_text" translatable="false">EXAMPLE</string>
+    <string name="add_widget" translatable="false">Add widget</string>
+    <string name="Conectado">Conectado...</string>
+    <string name="Desconectado">Desconectado...</string>
+    <string name="AbrirForce">Abrir Force</string>
+    <string name="CerrarForce">Cerrar Force</string>
+    <string name="PararForce">Parar Force</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

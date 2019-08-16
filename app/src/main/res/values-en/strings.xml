@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SealtoPorton</string>
+    <string name="Conectado">Connect...</string>
+    <string name="Desconectado">Disconnect.....</string>
+    <string name="AbrirForce">Open Force</string>
+    <string name="CerrarForce">Close Force</string>
+    <string name="PararForce">Stop Force</string>
+</resources>
