@@ -5,6 +5,8 @@
     <string name="add_widget" translatable="false">Add widget</string>
     <string name="Conectado">Conectado...</string>
     <string name="Desconectado">Desconectado...</string>
+    <string name="facebook_app_id" translatable="false">1029047930618720</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1029047930618720</string>
     <string name="AbrirForce">Abrir Force</string>
     <string name="CerrarForce">Cerrar Force</string>
     <string name="PararForce">Parar Force</string>

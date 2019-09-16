@@ -1,25 +1,19 @@
 package com.sealtosoft.porton.sealtoporton;
-
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
+import android.content.SharedPreferences;
+
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,24 +21,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 import com.google.firebase.database.*;
 import com.google.firebase.database.DatabaseReference;
-public class modoSimple extends AppCompatActivity implements SensorEventListener {
-
-    baseDeDatos codigos = new baseDeDatos(this,"baseDeDatos",null,2);
+public class modoSimple extends AppCompatActivity {
     String DirMac = "";
-    String DirMacSec = "";
-    Cursor c;
-    SQLiteDatabase db;
     ImageButton boton_accion, estado_conexion, estado_datos;
-    BluetoothSocket btSocket,btSocketSec;
+    BluetoothSocket btSocket;
     BluetoothAdapter adaptador;
-    BluetoothDevice device,deviceSec;
+    BluetoothDevice device;
     Handler bluetoothIn;
     String dataInPrint;
     String estado = "";
@@ -52,9 +40,9 @@ public class modoSimple extends AppCompatActivity implements SensorEventListener
     DatabaseReference myRef;
     ProgressDialog progreso;
     Boolean Apertura = true;
-    SensorManager sensorManager;
+    SharedPreferences misDatos;
+    SharedPreferences.Editor editor;
     Boolean Cerrar = false;
-    Float pasos = 0.0f;
     ToneGenerator toneGen1;
 
     private StringBuilder recDataString = new StringBuilder();
@@ -63,6 +51,7 @@ public class modoSimple extends AppCompatActivity implements SensorEventListener
 
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private connectionThreads mmConectionThreads;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +59,10 @@ public class modoSimple extends AppCompatActivity implements SensorEventListener
         inicializar();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("message");
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+        misDatos = getSharedPreferences("misPortones",Context.MODE_PRIVATE);
+        editor = misDatos.edit();
 
+        toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
 
         estado_datos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,7 +234,6 @@ public class modoSimple extends AppCompatActivity implements SensorEventListener
                                 if(Apertura){
                                     Apertura = false;
                                     Cerrar = true;
-                                    pasos = 0.0f;
                                     try {
                                         mmConectionThreads.write("Abrir");
                                     } catch (Exception e) {
@@ -294,22 +283,31 @@ public class modoSimple extends AppCompatActivity implements SensorEventListener
             }
         };
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == RESULT_OK && requestCode == 2782){
+            Log.d("Datos","Se aprobo el proceso " + data.getStringExtra("dirMac"));
+            editor.putString("dirMac1",data.getStringExtra("dirMac"));
+            editor.commit();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        db = codigos.getWritableDatabase();
-        //db.execSQL("INSERT INTO codigos VALUES ('98:D3:71:F5:C3:DF')");
-        c = db.rawQuery("SELECT * FROM codigos",null);
-        //c = db.rawQuery("DELETE FROM codigos",null);
-
-
-        if(c.moveToFirst()){
-            DirMac = c.getString(0);
-
-        }else{
-            Intent registro = new Intent(modoSimple.this,conecxion.class);
+        if(misDatos.getString("dirMac1","").equals("")){
+            //no hay datos guardados
+            /*Intent registro = new Intent(modoSimple.this,conecxion.class);
+            startActivityForResult(registro,2782);
+            return;*/
+            Intent registro = new Intent(modoSimple.this,login.class);
             startActivity(registro);
             return;
+        }else{
+            //si hay datos guardados
+            DirMac = misDatos.getString("dirMac1","");
         }
         super.onStart();
         if(adaptador.getState() == BluetoothAdapter.STATE_OFF){
@@ -322,10 +320,6 @@ public class modoSimple extends AppCompatActivity implements SensorEventListener
         }
         conectarBT conexion = new conectarBT();
         conexion.execute();
-
-
-
-
     }
 
     void inicializar(){
@@ -342,43 +336,6 @@ public class modoSimple extends AppCompatActivity implements SensorEventListener
     @Override
     protected void onResume() {
         super.onResume();
-        Sensor contPasos = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-
-        if(contPasos != null){
-            sensorManager.registerListener(this,contPasos,SensorManager.SENSOR_DELAY_UI);
-        }
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        /*if(Cerrar) {
-            pasos = event.values[0] + pasos;
-            Toast.makeText(modoSimple.this,String.valueOf(pasos),Toast.LENGTH_SHORT).show();
-
-            if(pasos >= 8.0f){
-                if(estado == "abierto"){
-                    try {
-                        //mmConectionThreads.write("Cerrar");
-                    } catch (Exception e) {
-                        try {
-                            btSocket.close();
-                            estado_conexion.setBackgroundResource(R.drawable.estados_desconectado);
-                        } catch (IOException e1) {
-
-                        }
-
-                    }
-                    Cerrar = false;
-                    pasos = 0.0f;
-                }
-            }
-        }*/
-    }
-
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     private class conectarBT extends AsyncTask<Void,Integer,Boolean>{

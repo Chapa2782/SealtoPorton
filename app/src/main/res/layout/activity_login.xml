@@ -1,9 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".login">
 
-</android.support.constraint.ConstraintLayout>
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:gravity="center"
+       android:textSize="35dp"
+       android:textColor="@color/Negro"
+       android:layout_marginTop="12dp"
+       android:text="Iniciar session"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Email"
+        android:textColor="@color/Negro"
+        android:inputType="textEmailAddress"
+        android:textSize="25dp"
+        android:layout_marginTop="12dp"
+        android:hint="Ingrese Email"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Pass"
+        android:textColor="@color/Negro"
+        android:textSize="25dp"
+        android:inputType="textPassword"
+        android:hint="Ingrese contraseña"
+        android:layout_marginTop="12dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/Pass2"
+        android:inputType="textPassword"
+        android:textColor="@color/Negro"
+        android:textSize="25dp"
+        android:hint="Ingrese nuevamente contraseña"
+        android:layout_marginTop="12dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/Negro"
+            android:id="@+id/btnIniciar"
+            android:text="Iniciar"
+            android:textSize="25dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/Negro"
+            android:id="@+id/btnRegistrar"
+            android:text="Registrarse"
+            android:textSize="25dp"/>
+    </LinearLayout>
+
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/btnGoogle"
+        android:layout_marginTop="12dp">
+
+    </com.google.android.gms.common.SignInButton>
+    <com.facebook.login.widget.LoginButton
+        android:layout_width="match_parent"
+        android:textSize="35dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/btnFacebook"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

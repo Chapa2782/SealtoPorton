@@ -6,14 +6,34 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context=".conecxion">
+    <ImageButton
+        android:id="@+id/btnBuscar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="92dp"
+        android:background="@drawable/boton_buscar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
-        android:id="@+id/Principal"
-        android:orientation="vertical">
+    <ListView
+        android:id="@+id/Listado"
+        android:layout_width="392dp"
+        android:layout_height="487dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBuscar"
+        app:layout_constraintVertical_bias="0.0"></ListView>
 
-    </FrameLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>
